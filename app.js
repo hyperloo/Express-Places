@@ -167,4 +167,6 @@ app.get("/new", (req, res) => {
 });
 app.use("/:userId", userCampgrounds);
 
-app.listen(3000, () => console.log("Server started"));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log("Server started"));
