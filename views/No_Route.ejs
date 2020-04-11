@@ -1,0 +1,15 @@
+<%- include("partials/header") %> <%-
+include("partials/nav",{isSignedIn,userId}) %> <% if(messages.error){%>
+<div class="container alert alert-danger text-center">
+  <%= messages.error %>
+</div>
+<%}%>
+<% if(messages.success){%>
+<div class="container alert alert-success text-center">
+  <%= messages.success %>
+</div>
+<%}%>
+<div class="container bg-light text-center">
+  <h1>This Address does not exist!!</h1>
+</div>
+<%- include("partials/footer") %>

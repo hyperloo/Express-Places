@@ -1,0 +1,56 @@
+<%- include("partials/header") %>
+<%- include("partials/nav",{isSignedIn,userId}) %> 
+<%- include("partials/sub-nav",{isSignedIn, title:"Welcome to YelpCamp", subTitle:"View all Camp Grounds from all over the world", data: "Click To Add New Camp Sites", url:`/new`}) %>
+<% if(messages.error){%>
+  <div class="container alert alert-danger text-center">
+    <%= messages.error %>
+  </div>
+<%}%>
+<% if(messages.success){%>
+<div class="container alert alert-success text-center">
+  <%= messages.success %>
+</div>
+<%}%>
+<div class="container">
+  <div class="row">
+    <% if(base){ %>
+    <div class="col-12">
+      <%= user.username %> <br /><%= user.email %>
+      <hr />
+      Registered On : <%= moment(user.registeredOn).fromNow() %> <br /><% if(userId == user._id.toString()){%> Previous Login On : <%= moment(user.lastLogin).fromNow() %> <%} %>
+      <br />
+    </div>
+    <%}%>
+    <h3 class="col-12 mt-2">
+      Our Most popular Sites Created by <%= user.username %>
+    </h3>
+    <% campgrounds.forEach(camp=>{ %>
+    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="card mb-4 p-1">
+        <img class="card-img-top" src="<%= camp.image %>" alt="image" />
+        <div class="card-body text-center">
+          <h5 class="card-title"><%= camp.name %></h5>
+          <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary mb-3"
+            >More Info</a
+          >
+          <br />
+          <% if(isSignedIn && userId == camp.authorId){ %>
+          <a href="/campgrounds/<%- camp._id.toString() %>/edit" class="btn btn-success"
+            >Edit</a
+          >
+          <form action="/campgrounds/<%- camp._id %>/delete?_method=DELETE" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-danger">
+              Delete
+            </button>
+          </form>
+          <%}%>
+          <p class="text-muted mt-1"><%= moment(camp.created).fromNow() %></p>
+        </div>
+      </div>
+      <!--<p><%=camp.name%></p>-->
+    </div>
+    <%});%>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

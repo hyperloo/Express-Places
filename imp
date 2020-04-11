@@ -1,0 +1,2 @@
+<span><%= foundBlog.created.toDateString() %></span>
+

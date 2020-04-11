@@ -1,0 +1,24 @@
+<nav class="navbar navbar-light navbar-expand-md  bg-light mb-3 border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">YelpCamp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav navbar-right">
+        <li class="nav-item mr-3">
+          <% if(!isSignedIn){%>
+            <a class="btn btn-success btn-large" href="/login">Login</a>
+          <% }else{%>
+            <a class="btn btn-success btn-large" href="/logout">Logout</a>
+            <% } %>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="/register">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

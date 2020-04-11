@@ -1,0 +1,114 @@
+<%- include("partials/header") %>
+<%- include("partials/nav",{isSignedIn,userId}) %>
+<%- include("partials/sub-nav", {title: campground.name, subTitle:campground.description ,data: "Click To See More", url:"/campgrounds"}) %>
+
+<% inc = () => {
+    liked = liked+1;
+};
+dec = () =>{
+    liked = liked-1;
+};
+%>
+<% if(messages.success){%>
+<div class="container alert alert-success text-center">
+    <%= messages.success %>
+</div>
+<%}%>
+<% if(messages.error){%>
+<div class="container alert alert-danger text-center">
+    <%= messages.error %>
+</div>
+<%}%>
+<div class="container mb-3">
+    <div class="row">
+
+        <div class="col-12 col-lg-8">
+            <div class="card" style="width: 100%;">
+                <div class="p-2 mb-5 border shadow-lg rounded card-img-top"
+                    style="box-shadow: 0 1rem 2rem rgb(0, 0, 0,1) !important;">
+                    <img src="<%= campground.image %>" class=" rounded" alt="image"
+                        style="width:100%;box-shadow: 0 0.4rem 0.5rem rgb(0, 0, 0,1) !important;" />
+                </div>
+
+                <div class="card-body">
+                    <div class="card-text">
+                        <p><%- campground.details %></p><br />
+                        <div><b>Created By:</b><a href="/<%= campground.authorId %>" class="btn btn-link"><%= campground.author %></a> <span><%= moment(campground.created).fromNow() %></span></div>
+                        <% if(userId == campground.authorId){ %>
+                        <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-primary">Edit</a>
+                        <form action="/campgrounds/<%= campground._id %>/delete?_method=DELETE" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                        <% } %>
+                            <br/>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted"><%= campground.views %> Views &nbsp&nbsp&nbsp&nbsp <%= campground.comments.length %> Comments</span>
+                            <!--<form id="likeForm" action="/campgrounds/<%= campground._id %>/like" method="POST" class="d-flex text-muted text-right form-check">
+                                <%= campground.likes %>&nbsp
+                                <label>
+                                    <input  id="like" type="radio" name="like"  style="" />
+                                    <img src="http://localhost:3000/images/thumbs-up-regular.svg" id="likeimg" alt="regular" style="width: 20px; height:20px" />
+                                </label>&nbsp&nbsp
+                                <%= campground.dislikes %>&nbsp
+                                <label>
+                                    <input  id="dislike" name="dislike" type="radio" style="" />
+                                    <img src="http://localhost:3000/images/thumbs-down-regular.svg" id="dislikeimg" alt="regular"  style="width: 20px; height:20px" />     
+                                </label>
+                                <%= campground.likes %>&nbsp
+                                <input type="image" name="likebutton" id="likebutton" src="/images/thumbs-up-regular.svg" alt="Submit" width="20" height="20" value="1" />
+                                &nbsp&nbsp
+                                <%= campground.dislikes %>&nbsp
+                                <input type="image" name="dislikebutton" id="dislikebutton" src="/images/thumbs-down-regular.svg" alt="Submit" width="20" height="20" value="-1" style="margin-top:7px" />
+                                
+                            </form>-->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">        
+            <div class="mt-5 mt-lg-1 mb-3 h3"> Comments</div>
+            <div class="list-group" style="height: 75vh; overflow-y: scroll;">
+                <% campground.comments.forEach(comment =>{%>
+                <div
+                    class="list-group-item list-group-item-action <%= ( latestComment && comment._id.toString() === latestComment._id.toString()) ? 'bg-secondary text-light' : 'no' %>">
+                    <div class="d-flex justify-content-between">
+                        <p>
+                            <strong><%= comment.author %></strong> <span class="d-inline <%= ( latestComment && comment._id.toString() === latestComment._id.toString()) ? 'bg-secondary text-light' : 'text-muted' %>"><%= moment(comment.commentedOn).fromNow() %></span>
+                            
+                        </p><% if(campground.authorId == userId) {%>
+                            <form action="/campgrounds/<%= campground._id %>/deleteComment/<%= comment._id %>?_method=DELETE" method="POST" class="d-inline text-right">
+                                <button class="btn btn-danger p-1">Delete</button>
+                            </form>
+                        <%}%>
+                    </div>
+                    <%= comment.text %>
+
+                </div>
+                <%})%>
+        
+            </div>
+            <h5 class="mt-3">Enter new Comment </h5 class="mb-3">
+            <form action="/campgrounds/<%= campground._id %>/new_comment?_method=PUT" method="POST"
+                class="my-1 justify-content-center bg-light border p-2">
+                <div class="form-group mb-1">
+                   <p class="text-primary"><%= username %></p>
+                </div>
+                <div class="form-group mb-1">
+                    <input class="form-control" type="text" name="comment" placeholder="Enter comment" required />
+                </div>
+                <button class="btn btn-primary" style="width: 100%" name="submit">
+                    Comment IT!
+                </button>
+            </form>
+        
+        
+        </div>
+    </div>
+</div>
+
+
+<%- include("partials/footer") %>

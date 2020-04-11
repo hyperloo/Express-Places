@@ -1,0 +1,52 @@
+<%- include("partials/header") %> 
+<%- include("partials/nav",{isSignedIn,userId}) %> 
+<%- include("partials/sub-nav",{title:"Welcome to YelpCamp", subTitle:"View all Camp Grounds from all over the world", data: "Click To Add New Camp Sites", url:(isSignedIn) ? `/${userId.toString()}/new` : "/login"}) %> 
+<% if(messages.error){%>
+<div class="container alert alert-danger text-center">
+  <%= messages.error %>
+</div>
+<%}%>
+<% if(messages.success){%>
+<div class="container alert alert-success text-center">
+  <%= messages.success %>
+</div>
+<%}%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 my-2 d-flex justify-content-between">
+      <span class="h2 mt-2 ml-0">Popular Sites</span>
+      <div class="d-inline py-1">
+        <a href="/users" class="btn btn-warning my-1">Users Page</a>
+        <% if(isSignedIn){%>
+        <a href="/<%= userId %>" class="btn btn-info my-1"><%= username %>'s Homepage</a>  
+        <%}%>
+      </div>
+    </div>
+    
+    <% campgrounds.forEach(camp=>{ %>
+    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="card mb-4 p-1">
+        <img class="card-img-top" src="<%= camp.image%>" alt="image" />
+        <div class="card-body text-center">
+          <h5 class="card-title"><%= camp.name %></h5>
+          <a href="/campgrounds/<%- camp._id.toString() %>" class="btn btn-primary mb-3">More Info</a>
+          <br />
+          <p class="text-muted">Created <%= moment(camp.created).fromNow() %></p>
+          <!--<% if(userId === camp.authorId){ %>
+          <a href="/campgrounds/<%- camp._id.toString() %>/edit" class="btn btn-success">Edit</a>
+          <form action="/campgrounds/<%- camp._id.toString() %>/delete?_method=DELETE" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-danger">
+              Delete
+            </button>
+          </form>
+          <%}%>-->
+        </div>
+      </div>
+      
+    </div>
+    <%});%>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

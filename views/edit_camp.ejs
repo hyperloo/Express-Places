@@ -1,0 +1,30 @@
+<%- include("partials/header") %>
+<%- include("partials/nav",{isSignedIn, userId}) %>
+
+<div class="container row" style="margin: 0 auto;">
+    <h1 class="col-12 text-center">Edit Campground</h1>
+    <div class="col-12 d-flex justify-content-center mb-5">
+        <form action="/campgrounds/<%= camp._id %>/edit?_method=PUT" class="justify-content-center" method="POST" style="width: 40%;">
+            <div class="form-group">
+                <input class="form-control" type="text" name="name" value="<%= camp.name %>" required />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="image" value="<%= camp.image %>" required />
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="description"  value="<%= camp.description %>" required />
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" type="text" name="details" style="height:100px"
+                    required><%= camp.details %></textarea>
+            </div>
+            <button class="btn btn-primary" style="width: 100%" name="submit">
+                Submit
+            </button>
+            <a href="/campgrounds" class="btn btn-success mt-3" style="width: 100%;">Go Back to camp grounds</a>
+        </form>
+
+    </div>
+</div>
+
+<%- include("partials/footer")%>
