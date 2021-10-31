@@ -7,6 +7,8 @@ input[type="radio"] {
 
 input[type="radio"] + img {
   cursor: pointer;
+  // nothing to commit;
+  margin:0;
 }
 
 
